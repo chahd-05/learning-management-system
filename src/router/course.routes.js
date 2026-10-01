@@ -3,7 +3,8 @@ import
 {
 getCourses,
 getCourse,
-filterCoursesController
+filterCoursesController,
+sortCoursesController
 } from "../controllers/course.controller.js"
 
 
@@ -11,7 +12,7 @@ filterCoursesController
 const router = express.Router();
 
 router.get("/", getCourses)
-router.get("/:id",getCourse)
 router.post("/filter", filterCoursesController);
-
+router.get("/sort", sortCoursesController);
+router.get("/:id",getCourse)
 export default router;

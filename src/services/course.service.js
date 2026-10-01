@@ -24,3 +24,9 @@ export const filterCourses = async (category, level) => {
 
     return await Course.find(filter);
 };
+
+export const sortCourses = async () => {
+    return await Course.find({
+        status: "published"
+    }).sort({ publishedAt: -1 });
+};
