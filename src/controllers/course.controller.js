@@ -2,7 +2,9 @@ import
 {
 getAllCourses,
 getCourseById,
-filterCourses } from "../services/course.service.js";
+filterCourses,
+sortCourses
+} from "../services/course.service.js";
 
 
 
@@ -60,6 +62,24 @@ export const filterCoursesController = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Failed to filter courses",
+            error: error.message
+        });
+    }
+};
+
+export const sortCoursesController = async (req, res) => {
+    try {
+        const courses = await sortCourses();
+
+        res.status(200).json({
+            success: true,
+            message: "Courses sorted successfully",
+            data: courses
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to sort courses",
             error: error.message
         });
     }
