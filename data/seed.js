@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Course from "../src/models/Course.js";
+import Module from "../src/models/Module.js";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const seedCourses = async () => {
         console.log("MongoDB connected");
 
         await Course.deleteMany();
+        await Module.deleteMany();
 
         const courses = [
             {
@@ -49,9 +51,48 @@ const seedCourses = async () => {
             }
         ];
 
-        await Course.insertMany(courses);
+        const createdCourses = await Course.insertMany(courses);
 
         console.log("Courses seeded successfully");
+
+        const modules = [
+            {
+                courseId: createdCourses[0]._id,
+                title: "JavaScript Basics",
+                description: "Learn variables, data types and operators.",
+                order: 1,
+                estimatedDuration: 5,
+                status: "published"
+            },
+            {
+                courseId: createdCourses[0]._id,
+                title: "Functions",
+                description: "Learn how to create and use functions.",
+                order: 2,
+                estimatedDuration: 6,
+                status: "published"
+            },
+            {
+                courseId: createdCourses[1]._id,
+                title: "Node.js Fundamentals",
+                description: "Understand Node.js and its main concepts.",
+                order: 1,
+                estimatedDuration: 8,
+                status: "published"
+            },
+            {
+                courseId: createdCourses[1]._id,
+                title: "Express.js",
+                description: "Build REST APIs with Express.js.",
+                order: 2,
+                estimatedDuration: 10,
+                status: "published"
+            }
+        ];
+
+        await Module.insertMany(modules);
+
+        console.log("Modules seeded successfully");
 
     } catch (error) {
         console.error("Seed failed:", error.message);
