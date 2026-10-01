@@ -1,6 +1,8 @@
-import { getAllCourses,getCourseById } from "../services/course.service.js";
-
-
+import
+{
+getAllCourses,
+getCourseById,
+filterCourses } from "../services/course.service.js";
 
 
 
@@ -41,3 +43,24 @@ export const getCourse = async (req,res) => {
         });
     }
 }
+
+export const filterCoursesController = async (req, res) => {
+    try {
+        const { category, level } = req.body;
+
+        const courses = await filterCourses(category, level);
+
+        res.status(200).json({
+            success: true,
+            message: "Courses filtered successfully",
+            data: courses
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to filter courses",
+            error: error.message
+        });
+    }
+};
