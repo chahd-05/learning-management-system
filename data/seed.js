@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Course from "../src/models/Course.js";
 import Module from "../src/models/Module.js";
+import Resource from "../src/models/Resource.js";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const seedCourses = async () => {
 
         await Course.deleteMany();
         await Module.deleteMany();
+        await Resource.deleteMany();
 
         const courses = [
             {
@@ -90,9 +92,51 @@ const seedCourses = async () => {
             }
         ];
 
-        await Module.insertMany(modules);
+        const createdModules = await Module.insertMany(modules);
 
         console.log("Modules seeded successfully");
+        
+        const resources = [
+            {
+                moduleId: createdModules[0]._id,
+                title: "JavaScript Basics PDF",
+                type: "pdf",
+                urlOrStorageRef: "/resources/javascript-basics.pdf",
+                description: "PDF explaining JavaScript basics.",
+                originalFileName: "javascript-basics.pdf",
+                fileSize: 2500000,
+                estimatedDuration: 10,
+                order: 1
+            },
+
+            {
+                moduleId: createdModules[0]._id,
+                title: "JavaScript Basics Video",
+                type: "video",
+                urlOrStorageRef: "https://example.com/javascript-basics",
+                description: "Video explaining JavaScript basics.",
+                originalFileName: null,
+                fileSize: null,
+                estimatedDuration: 15,
+                order: 2
+            },
+
+            {
+                moduleId: createdModules[1]._id,
+                title: "Functions Documentation",
+                type: "link",
+                urlOrStorageRef: "https://developer.mozilla.org/",
+                description: "Documentation about JavaScript functions.",
+                originalFileName: null,
+                fileSize: null,
+                estimatedDuration: 5,
+                order: 1
+            }
+        ];
+
+        await Resource.insertMany(resources);
+
+        console.log("Resources seeded successfully");
 
     } catch (error) {
         console.error("Seed failed:", error.message);
