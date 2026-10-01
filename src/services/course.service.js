@@ -30,3 +30,10 @@ export const sortCourses = async () => {
         status: "published"
     }).sort({ publishedAt: -1 });
 };
+
+export const searchCourses = async (keyword) => {
+    return await Course.find({
+        status: "published",
+        title: { $regex: keyword, $options: "i" }
+    });
+};
