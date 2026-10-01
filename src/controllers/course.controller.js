@@ -9,7 +9,7 @@ searchCourses
 
 
 
-export const getCourses = async (req, res) => {
+export const getCourses = async (req, res, next) => {
     try {
         const courses = await getAllCourses();
         res.status(200).json({
@@ -20,14 +20,10 @@ export const getCourses = async (req, res) => {
             "message": "Courses retrieved successfully"
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch courses",
-            error: error.message
-        });
+        next(error);
     }
 }
-export const getCourse = async (req,res) => {
+export const getCourse = async (req, res, next) => {
     try {
 
         const course = await getCourseById(req.params.id);
@@ -39,15 +35,11 @@ export const getCourse = async (req,res) => {
             "message": "Course retrieved successfully"
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch courses",
-            error: error.message
-        });
+        next(error);
     }
 }
 
-export const filterCoursesController = async (req, res) => {
+export const filterCoursesController = async (req, res, next) => {
     try {
         const { category, level } = req.body;
 
@@ -60,15 +52,11 @@ export const filterCoursesController = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to filter courses",
-            error: error.message
-        });
+        next(error);
     }
 };
 
-export const sortCoursesController = async (req, res) => {
+export const sortCoursesController = async (req, res, next) => {
     try {
         const courses = await sortCourses();
 
@@ -78,15 +66,11 @@ export const sortCoursesController = async (req, res) => {
             data: courses
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to sort courses",
-            error: error.message
-        });
+        next(error);
     }
 };
 
-export const searchCourse = async (req, res) => {
+export const searchCourse = async (req, res, next) => {
     try {
         const courses = await searchCourses(req.query.keyword);
 
@@ -96,10 +80,7 @@ export const searchCourse = async (req, res) => {
             data: courses
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to search courses",
-            error: error.message
-        });
+        next(error);
     }
 };
+
