@@ -3,7 +3,8 @@ import
 getAllCourses,
 getCourseById,
 filterCourses,
-sortCourses
+sortCourses,
+searchCourses
 } from "../services/course.service.js";
 
 
@@ -80,6 +81,24 @@ export const sortCoursesController = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Failed to sort courses",
+            error: error.message
+        });
+    }
+};
+
+export const searchCourse = async (req, res) => {
+    try {
+        const courses = await searchCourses(req.query.keyword);
+
+        res.status(200).json({
+            success: true,
+            message: "Courses searched successfully",
+            data: courses
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to search courses",
             error: error.message
         });
     }
