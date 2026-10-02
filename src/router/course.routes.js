@@ -49,6 +49,16 @@ router.get("/", getCourses)
  *         description: Courses filtered successfully
  */
 router.post("/filter", filterCoursesController);
+/**
+ * @swagger
+ * /courses/sort:
+ *   get:
+ *     summary: Sort courses by newest
+ *     tags: [Courses]
+ *     responses:
+ *       200:
+ *         description: Courses sorted successfully
+ */
 router.get("/sort", sortCoursesController);
 /**
  * @swagger
