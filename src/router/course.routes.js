@@ -12,6 +12,18 @@ searchCourse
 
 const router = express.Router();
 
+
+
+/**
+ * @swagger
+ * /courses:
+ *   get:
+ *     summary: Get all published courses
+ *     tags: [Courses]
+ *     responses:
+ *       200:
+ *         description: Courses retrieved successfully
+ */
 router.get("/", getCourses)
 router.post("/filter", filterCoursesController);
 router.get("/sort", sortCoursesController);
