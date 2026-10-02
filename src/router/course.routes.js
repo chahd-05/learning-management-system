@@ -50,6 +50,22 @@ router.get("/", getCourses)
  */
 router.post("/filter", filterCoursesController);
 router.get("/sort", sortCoursesController);
+/**
+ * @swagger
+ * /courses/search:
+ *   get:
+ *     summary: Search courses by keyword
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: query
+ *         name: keyword
+ *         schema:
+ *           type: string
+ *         example: javascript
+ *     responses:
+ *       200:
+ *         description: Courses searched successfully
+ */
 router.get("/search", searchCourse);
 /**
  * @swagger
