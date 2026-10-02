@@ -25,6 +25,29 @@ const router = express.Router();
  *         description: Courses retrieved successfully
  */
 router.get("/", getCourses)
+/**
+ * @swagger
+ * /courses/filter:
+ *   post:
+ *     summary: Filter courses by category and level
+ *     tags: [Courses]
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               category:
+ *                 type: string
+ *                 example: Backend
+ *               level:
+ *                 type: string
+ *                 example: beginner
+ *     responses:
+ *       200:
+ *         description: Courses filtered successfully
+ */
 router.post("/filter", filterCoursesController);
 router.get("/sort", sortCoursesController);
 router.get("/search", searchCourse);
