@@ -1,23 +1,20 @@
-# learning-management-system
+# Learning Management System
 
 ## Description
 
 A **Learning Management System (LMS)** backend API developed with **Node.js, Express.js, MongoDB, and Mongoose**.
 
-The project provides a backend foundation for managing an online learning platform, including:
+The project provides a backend foundation for managing:
 
 * Courses
 * Modules
 * Learning resources
 * Course filtering and sorting
 * REST API
-* MongoDB database
 * Swagger API documentation
 * Error handling
 
 The project follows a modular architecture using **controllers, services, models, routes, middlewares, and configuration**.
-
-Future features such as authentication, enrollments, progress tracking, quizzes, and feedback can be integrated into the platform.
 
 ## How to Run the Project
 
@@ -34,53 +31,45 @@ cd lms_projet
 npm install
 ```
 
-### 3. Start MongoDB with Docker
+### 3. Configure environment variables
 
-```bash
-docker compose up -d
-```
-
-### 4. Configure environment variables
-
-Create a `.env` file and configure your MongoDB connection and application port.
-
-Example:
+Create a `.env` file at the root of the project:
 
 ```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/lms
+MONGO_URI=mongodb://mongodb:27017/lms_projet
 ```
+
+### 4. Start the project with Docker
+
+```bash
+docker compose up --build
+```
+
+This starts:
+
+* **Node.js / Express API**
+* **MongoDB**
 
 ### 5. Run the seed
 
-```bash
-node run seed
-```
-
-### 6. Start the project
-
-For development:
+Insert the initial data into MongoDB:
 
 ```bash
-npm run dev
+docker compose exec api npm run seed
 ```
 
-Or:
+### 6. Access the API
 
-```bash
-npm start
-```
-
-The API will be available at:
+The API is available at:
 
 ```text
-http://localhost:3000
+http://localhost:3500
 ```
 
-### 7. API Documentation
+### 7. Swagger Documentation
 
-Swagger documentation is available at:
+API documentation is available at:
 
 ```text
-http://localhost:3000/api-docs
+http://localhost:3500/swagger/
 ```
