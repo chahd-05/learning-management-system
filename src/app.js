@@ -8,6 +8,9 @@ import resourceRoutes from "./router/resource.routes.js";
 import { notFound } from "./middlewares/notFound.middleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+
+import authRoutes from "./router/auth.routes.js";
+
 dotenv.config()
 
 const app = express();
@@ -20,6 +23,8 @@ app.use("/modules", moduleRoutes);
 app.use("/resources", resourceRoutes);
 app.use(notFound)
 app.use(errorHandler)
+
+app.use("/auth", authRoutes)
 
 app.listen(3500,()=>{
     console.log("Server runinig in port 3500")
