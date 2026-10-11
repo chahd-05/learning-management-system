@@ -7,7 +7,8 @@ filterCoursesController,
 sortCoursesController,
 searchCourse,
 createCourseController,
-updateCourseController
+updateCourseController,
+changeCourseStatusController
 } from "../controllers/course.controller.js"
 
 
@@ -96,6 +97,7 @@ router.get("/search", searchCourse);
  *       404:
  *         description: Course not found
  */
+router.patch("/status/:trainerId/:courseId", changeCourseStatusController);
 router.post("/create/:trainerId",createCourseController);
 router.patch("/update/:trainerId/:courseId", updateCourseController);
 router.get("/:id",getCourse)
