@@ -4,7 +4,8 @@ getAllCourses,
 getCourseById,
 filterCourses,
 sortCourses,
-searchCourses
+searchCourses,
+createCourse
 } from "../services/course.service.js";
 
 
@@ -84,3 +85,39 @@ export const searchCourse = async (req, res, next) => {
     }
 };
 
+export const createCourseController = async (req, res, next) => {
+    try {
+        const trainerId = req.params.trainerId;
+
+        const {
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        } = req.body;
+
+        const course = await createCourse({
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        }, trainerId);
+
+        return res.status(201).json({
+            success: true,
+            message: "Course created successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};

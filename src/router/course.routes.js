@@ -5,7 +5,8 @@ getCourses,
 getCourse,
 filterCoursesController,
 sortCoursesController,
-searchCourse
+searchCourse,
+createCourseController
 } from "../controllers/course.controller.js"
 
 
@@ -94,5 +95,6 @@ router.get("/search", searchCourse);
  *       404:
  *         description: Course not found
  */
+router.post("/create/:trainerId",createCourseController);
 router.get("/:id",getCourse)
 export default router;

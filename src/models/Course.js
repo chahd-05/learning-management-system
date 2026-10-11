@@ -17,6 +17,7 @@ const courseSchema = new mongoose.Schema(
         description: {
             type: String,
             required: true,
+            trim: true,
         },
 
         objectives: {
@@ -33,6 +34,7 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+
         category: {
             type: String,
             required: true,
@@ -48,10 +50,12 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: ["draft", "published", "archived"],
+            default: "draft",
         },
 
         trainerId: {
             type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
 
@@ -61,8 +65,8 @@ const courseSchema = new mongoose.Schema(
         },
     },
     {
-        timeseries: true,
-    },
+        timestamps: true,
+    }
 );
 
 const Course = mongoose.model("Course", courseSchema);
