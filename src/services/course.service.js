@@ -37,3 +37,10 @@ export const searchCourses = async (keyword) => {
         title: { $regex: keyword, $options: "i" }
     });
 };
+
+export const createCourse = async (data,trainerId) =>{
+    return await Course.create({
+        ...data,
+        trainerId:trainerId,
+    })
+}
