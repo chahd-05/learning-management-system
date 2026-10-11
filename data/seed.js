@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import Course from "../src/models/Course.js";
 import Module from "../src/models/Module.js";
 import Resource from "../src/models/Resource.js";
+import User from "../src/models/User.js";
 
 dotenv.config();
+
 
 const seedCourses = async () => {
     try {
@@ -15,6 +17,28 @@ const seedCourses = async () => {
         await Course.deleteMany();
         await Module.deleteMany();
         await Resource.deleteMany();
+        await User.deleteMany();
+
+
+
+        const trainer = await User.findOneAndUpdate(
+            { email: "trainer@example.com" },
+            {
+                $setOnInsert: {
+                    fullName: "Ahmed Trainer",
+                    email: "trainer@example.com",
+                    passwordHash: "not-used",
+                    role: "formateur",
+                    status: "active"
+                }
+            },
+            {
+                upsert: true,
+                new: true
+            }
+        );
+
+        console.log("Trainer ID:", trainer._id);
 
         const courses = [
             {
@@ -31,7 +55,7 @@ const seedCourses = async () => {
                 category: "Programming",
                 estimatedDuration: 20,
                 status: "published",
-                trainerId: new mongoose.Types.ObjectId(),
+                trainerId: trainer._id,
                 publishedAt: new Date()
             },
             {
@@ -48,7 +72,7 @@ const seedCourses = async () => {
                 category: "Backend",
                 estimatedDuration: 25,
                 status: "published",
-                trainerId: new mongoose.Types.ObjectId(),
+                trainerId: trainer._id,
                 publishedAt: new Date()
             }
         ];
@@ -95,7 +119,7 @@ const seedCourses = async () => {
         const createdModules = await Module.insertMany(modules);
 
         console.log("Modules seeded successfully");
-        
+
         const resources = [
             {
                 moduleId: createdModules[0]._id,
