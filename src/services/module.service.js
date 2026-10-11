@@ -12,3 +12,16 @@ export const createModule = async (courseId, data) => {
         courseId
     });
 };
+export const updateModule = async (moduleId, courseId, data) => {
+    return await Module.findOneAndUpdate(
+        {
+            _id: moduleId,
+            courseId: courseId
+        },
+        data,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+};
