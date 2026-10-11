@@ -1,7 +1,8 @@
 import express from "express";
 
 import {
-    getModulesByCourseController
+getModulesByCourseController,
+createModuleController
 } from "../controllers/module.controller.js";
 
 const router = express.Router();
@@ -28,5 +29,6 @@ router.get(
     "/course/:courseId",
     getModulesByCourseController
 );
+router.post("/create/:courseId", createModuleController);
 
 export default router;
