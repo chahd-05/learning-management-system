@@ -2,7 +2,8 @@ import
 {
 getModulesByCourse,
 createModule,
-updateModule
+updateModule,
+deleteModule
 } from "../services/module.service.js"
 
 
@@ -80,6 +81,28 @@ export const updateModuleController = async (req, res, next) => {
             success: true,
             message: "Module updated successfully",
             data: module
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const deleteModuleController = async (req, res, next) => {
+    try {
+        const { moduleId, courseId } = req.params;
+
+        const module = await deleteModule(moduleId, courseId);
+
+        if (!module) {
+            return res.status(404).json({
+                success: false,
+                message: "Module not found in this course"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Module deleted successfully"
         });
 
     } catch (error) {
