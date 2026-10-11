@@ -1,7 +1,8 @@
 import
 {
 getModulesByCourse,
-createModule
+createModule,
+updateModule
 } from "../services/module.service.js"
 
 
@@ -41,6 +42,43 @@ export const createModuleController = async (req, res, next) => {
         return res.status(201).json({
             success: true,
             message: "Module created successfully",
+            data: module
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const updateModuleController = async (req, res, next) => {
+    try {
+        const { moduleId, courseId } = req.params;
+
+        const {
+            title,
+            description,
+            order,
+            estimatedDuration,
+            status
+        } = req.body;
+
+        const module = await updateModule(moduleId, courseId, {
+            title,
+            description,
+            order,
+            estimatedDuration,
+            status
+        });
+
+        if (!module) {
+            return res.status(404).json({
+                success: false,
+                message: "Module not found in this course"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Module updated successfully",
             data: module
         });
 
