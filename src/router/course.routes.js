@@ -6,7 +6,8 @@ getCourse,
 filterCoursesController,
 sortCoursesController,
 searchCourse,
-createCourseController
+createCourseController,
+updateCourseController
 } from "../controllers/course.controller.js"
 
 
@@ -96,5 +97,6 @@ router.get("/search", searchCourse);
  *         description: Course not found
  */
 router.post("/create/:trainerId",createCourseController);
+router.patch("/update/:trainerId/:courseId", updateCourseController);
 router.get("/:id",getCourse)
 export default router;
