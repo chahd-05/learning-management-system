@@ -44,3 +44,17 @@ export const createCourse = async (data,trainerId) =>{
         trainerId:trainerId,
     })
 }
+export const updateCourse = async (courseId, trainerId, data) => {
+    return await Course.findOneAndUpdate(
+        {
+            _id: courseId,
+            trainerId: trainerId
+        },
+        data,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+};
+
