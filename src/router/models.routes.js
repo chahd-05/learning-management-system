@@ -3,7 +3,8 @@ import express from "express";
 import {
 getModulesByCourseController,
 createModuleController,
-updateModuleController
+updateModuleController,
+deleteModuleController
 } from "../controllers/module.controller.js";
 
 const router = express.Router();
@@ -30,6 +31,7 @@ router.get(
     "/course/:courseId",
     getModulesByCourseController
 );
+router.delete("/delete/:courseId/:moduleId", deleteModuleController);
 router.post("/create/:courseId", createModuleController);
 router.patch("/update/:courseId/:moduleId", updateModuleController);
 
