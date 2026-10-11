@@ -6,3 +6,9 @@ export const getModulesByCourse = async (courseId) => {
         courseId: courseId
     }).sort({ order: 1 });
 };
+export const createModule = async (courseId, data) => {
+    return await Module.create({
+        ...data,
+        courseId
+    });
+};
