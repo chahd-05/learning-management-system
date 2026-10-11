@@ -57,4 +57,20 @@ export const updateCourse = async (courseId, trainerId, data) => {
         }
     );
 };
+export const changeCourseStatus = async (courseId, trainerId, status) => {
+    return await Course.findOneAndUpdate(
+        {
+            _id: courseId,
+            trainerId: trainerId
+        },
+        {
+            status: status,
+            publishedAt: status === "published" ? new Date() : null
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+};
 
