@@ -21,10 +21,12 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/courses", CourseRoutes)
 app.use("/modules", moduleRoutes);
 app.use("/resources", resourceRoutes);
+app.use("/auth", authRoutes)
+
 app.use(notFound)
 app.use(errorHandler)
 
-app.use("/auth", authRoutes)
+
 
 app.listen(3500,()=>{
     console.log("Server runinig in port 3500")
