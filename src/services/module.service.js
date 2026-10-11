@@ -25,3 +25,9 @@ export const updateModule = async (moduleId, courseId, data) => {
         }
     );
 };
+export const deleteModule = async (moduleId, courseId) => {
+    return await Module.findOneAndDelete({
+        _id: moduleId,
+        courseId: courseId
+    });
+};
