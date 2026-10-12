@@ -1,11 +1,13 @@
 import express from "express";
+
 import {
     getResourcesByModuleController,
     createResourceController
 } from "../controllers/resource.controller.js";
-import {
-upload
-} from "../middlewares/upload.middleware.js";
+
+import { upload } from "../middlewares/upload.middleware.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
 
 /**
@@ -20,7 +22,6 @@ const router = express.Router();
  *         required: true
  *         schema:
  *           type: string
- *         example: 68f123456789012345678901
  *     responses:
  *       200:
  *         description: Resources retrieved successfully
@@ -29,5 +30,12 @@ router.get(
     "/module/:moduleId",
     getResourcesByModuleController
 );
-router.post("/create/:moduleId", upload.single("file"),createResourceController);
+
+router.post(
+    "/create/:moduleId",
+    authenticate,
+    upload.single("file"),
+    createResourceController
+);
+
 export default router;

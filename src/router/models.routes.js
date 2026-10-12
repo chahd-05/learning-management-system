@@ -1,14 +1,14 @@
 import express from "express";
+import { authenticate } from "../middlewares/auth.middleware.js";
 
 import {
-getModulesByCourseController,
-createModuleController,
-updateModuleController,
-deleteModuleController
+    getModulesByCourseController,
+    createModuleController,
+    updateModuleController,
+    deleteModuleController
 } from "../controllers/module.controller.js";
 
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -31,8 +31,23 @@ router.get(
     "/course/:courseId",
     getModulesByCourseController
 );
-router.delete("/delete/:courseId/:moduleId", deleteModuleController);
-router.post("/create/:courseId", createModuleController);
-router.patch("/update/:courseId/:moduleId", updateModuleController);
+
+router.post(
+    "/create/:courseId",
+    authenticate,
+    createModuleController
+);
+
+router.patch(
+    "/update/:courseId/:moduleId",
+    authenticate,
+    updateModuleController
+);
+
+router.delete(
+    "/delete/:courseId/:moduleId",
+    authenticate,
+    deleteModuleController
+);
 
 export default router;

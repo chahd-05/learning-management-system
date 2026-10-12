@@ -1,13 +1,12 @@
-import
-{
-getAllCourses,
-getCourseById,
-filterCourses,
-sortCourses,
-searchCourses,
-createCourse,
-updateCourse,
-changeCourseStatus
+import {
+    getAllCourses,
+    getCourseById,
+    filterCourses,
+    sortCourses,
+    searchCourses,
+    createCourse,
+    updateCourse,
+    changeCourseStatus
 } from "../services/course.service.js";
 
 
@@ -89,7 +88,13 @@ export const searchCourse = async (req, res, next) => {
 
 export const createCourseController = async (req, res, next) => {
     try {
-        const trainerId = req.params.trainerId;
+        const trainerId = req.user.userId;
+        if (req.user.role !== "formateur") {
+            return res.status(403).json({
+                success: false,
+                message: "Only trainers can create courses"
+            });
+        }
 
         const {
             title,
@@ -112,12 +117,6 @@ export const createCourseController = async (req, res, next) => {
             category,
             estimatedDuration
         }, trainerId);
-        if (!trainerId) {
-            return res.status(404).json({
-                success: false,
-                message: "user not found for this "
-            });
-        }
 
         return res.status(201).json({
             success: true,
@@ -131,7 +130,15 @@ export const createCourseController = async (req, res, next) => {
 };
 export const updateCourseController = async (req, res, next) => {
     try {
-        const { courseId, trainerId } = req.params;
+        const { courseId } = req.params;
+        const trainerId = req.user.userId;
+
+        if (req.user.role !== "formateur") {
+            return res.status(403).json({
+                success: false,
+                message: "Only trainers can update courses"
+            });
+        }
 
         const {
             title,
@@ -178,9 +185,17 @@ export const updateCourseController = async (req, res, next) => {
 };
 export const changeCourseStatusController = async (req, res, next) => {
     try {
-        const { courseId, trainerId } = req.params;
+
+        const { courseId } = req.params;
+        const trainerId = req.user.userId;
         const { status } = req.body;
 
+        if (req.user.role !== "formateur") {
+            return res.status(403).json({
+                success: false,
+                message: "Only trainers can update courses"
+            });
+        }
         const course = await changeCourseStatus(
             courseId,
             trainerId,
