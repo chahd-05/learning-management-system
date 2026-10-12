@@ -4,7 +4,10 @@ getAllCourses,
 getCourseById,
 filterCourses,
 sortCourses,
-searchCourses
+searchCourses,
+createCourse,
+updateCourse,
+changeCourseStatus
 } from "../services/course.service.js";
 
 
@@ -84,3 +87,120 @@ export const searchCourse = async (req, res, next) => {
     }
 };
 
+export const createCourseController = async (req, res, next) => {
+    try {
+        const trainerId = req.params.trainerId;
+
+        const {
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        } = req.body;
+
+        const course = await createCourse({
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        }, trainerId);
+        if (!trainerId) {
+            return res.status(404).json({
+                success: false,
+                message: "user not found for this "
+            });
+        }
+
+        return res.status(201).json({
+            success: true,
+            message: "Course created successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const updateCourseController = async (req, res, next) => {
+    try {
+        const { courseId, trainerId } = req.params;
+
+        const {
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        } = req.body;
+
+        const course = await updateCourse(
+            courseId,
+            trainerId,
+            {
+                title,
+                shortDescription,
+                description,
+                objectives,
+                prerequisites,
+                level,
+                category,
+                estimatedDuration
+            }
+        );
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found for this trainer"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Course updated successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const changeCourseStatusController = async (req, res, next) => {
+    try {
+        const { courseId, trainerId } = req.params;
+        const { status } = req.body;
+
+        const course = await changeCourseStatus(
+            courseId,
+            trainerId,
+            status
+        );
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found for this trainer"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Course status updated successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};

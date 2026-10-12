@@ -1,9 +1,11 @@
 import express from "express";
-
 import {
-    getResourcesByModuleController
+    getResourcesByModuleController,
+    createResourceController
 } from "../controllers/resource.controller.js";
-
+import {
+upload
+} from "../middlewares/upload.middleware.js";
 const router = express.Router();
 
 /**
@@ -27,5 +29,5 @@ router.get(
     "/module/:moduleId",
     getResourcesByModuleController
 );
-
+router.post("/create/:moduleId", upload.single("file"),createResourceController);
 export default router;

@@ -4,6 +4,7 @@ const resourceSchema = new mongoose.Schema(
     {
         moduleId: {
             type: mongoose.Schema.Types.ObjectId,
+            ref: "Module",
             required: true
         },
 

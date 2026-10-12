@@ -37,3 +37,40 @@ export const searchCourses = async (keyword) => {
         title: { $regex: keyword, $options: "i" }
     });
 };
+
+export const createCourse = async (data,trainerId) =>{
+    return await Course.create({
+        ...data,
+        trainerId:trainerId,
+    })
+}
+export const updateCourse = async (courseId, trainerId, data) => {
+    return await Course.findOneAndUpdate(
+        {
+            _id: courseId,
+            trainerId: trainerId
+        },
+        data,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+};
+export const changeCourseStatus = async (courseId, trainerId, status) => {
+    return await Course.findOneAndUpdate(
+        {
+            _id: courseId,
+            trainerId: trainerId
+        },
+        {
+            status: status,
+            publishedAt: status === "published" ? new Date() : null
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+};
+
