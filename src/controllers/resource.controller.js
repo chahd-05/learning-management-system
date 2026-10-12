@@ -1,7 +1,6 @@
-import
-{
-getResourcesByModule,
-createResource
+import {
+    getResourcesByModule,
+    createResource
 } from "../services/resource.service.js";
 
 
@@ -18,9 +17,19 @@ export const getResourcesByModuleController = async (req, res, next) => {
         next(error);
     }
 };
+
+
 export const createResourceController = async (req, res, next) => {
     try {
         const { moduleId } = req.params;
+        const trainerId = req.user.userId;
+
+        if (req.user.role !== "formateur") {
+            return res.status(403).json({
+                success: false,
+                message: "Only trainers can create resources"
+            });
+        }
 
         const {
             title,
@@ -31,7 +40,7 @@ export const createResourceController = async (req, res, next) => {
             order
         } = req.body;
 
-        const resource = await createResource(moduleId, {
+        const resource = await createResource(moduleId, trainerId, {
             title,
             type,
             urlOrStorageRef: req.file ? req.file.path : urlOrStorageRef,
@@ -45,7 +54,7 @@ export const createResourceController = async (req, res, next) => {
         if (!resource) {
             return res.status(404).json({
                 success: false,
-                message: "Module not found"
+                message: "Module not found for this trainer"
             });
         }
 
