@@ -35,18 +35,21 @@ router.get(
 router.post(
     "/create/:courseId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     createModuleController
 );
 
 router.patch(
     "/update/:courseId/:moduleId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     updateModuleController
 );
 
 router.delete(
     "/delete/:courseId/:moduleId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     deleteModuleController
 );
 

@@ -7,6 +7,7 @@ import {
 
 import { upload } from "../middlewares/upload.middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
 
 const router = express.Router();
 
@@ -34,6 +35,7 @@ router.get(
 router.post(
     "/create/:moduleId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     upload.single("file"),
     createResourceController
 );

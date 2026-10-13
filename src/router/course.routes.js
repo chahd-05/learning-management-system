@@ -96,11 +96,11 @@ router.get("/search", searchCourse);
  *       404:
  *         description: Course not found
  */
-router.patch("/status/:courseId", authenticate, changeCourseStatusController);
+router.patch("/status/:courseId", authenticate, authorizeRoles("formateur", "admin"), changeCourseStatusController);
 
-router.post("/create", authenticate, createCourseController);
+router.post("/create", authenticate, authorizeRoles("formateur", "admin"), createCourseController);
 
-router.patch("/update/:courseId", authenticate, updateCourseController);
+router.patch("/update/:courseId", authenticate, authorizeRoles("formateur", "admin"), updateCourseController);
 
 router.get("/:id", getCourse);
 export default router;
