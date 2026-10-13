@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate } from "../middlewares/auth.middleware.js";
-
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
 import {
     getModulesByCourseController,
     createModuleController,
@@ -35,18 +35,21 @@ router.get(
 router.post(
     "/create/:courseId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     createModuleController
 );
 
 router.patch(
     "/update/:courseId/:moduleId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     updateModuleController
 );
 
 router.delete(
     "/delete/:courseId/:moduleId",
     authenticate,
+    authorizeRoles("formateur", "admin"),
     deleteModuleController
 );
 
