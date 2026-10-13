@@ -10,8 +10,9 @@ createCourseController,
 updateCourseController,
 changeCourseStatusController
 } from "../controllers/course.controller.js"
-import { authenticate } from "../middlewares/auth.middleware.js";
 
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
 const router = express.Router();
 
 
