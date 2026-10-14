@@ -23,14 +23,6 @@ export const createResourceController = async (req, res, next) => {
     try {
         const { moduleId } = req.params;
         const trainerId = req.user.userId;
-
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can create resources"
-            });
-        }
-
         const {
             title,
             type,

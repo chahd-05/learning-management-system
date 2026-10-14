@@ -89,12 +89,6 @@ export const searchCourse = async (req, res, next) => {
 export const createCourseController = async (req, res, next) => {
     try {
         const trainerId = req.user.userId;
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can create courses"
-            });
-        }
 
         const {
             title,
@@ -132,13 +126,6 @@ export const updateCourseController = async (req, res, next) => {
     try {
         const { courseId } = req.params;
         const trainerId = req.user.userId;
-
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can update courses"
-            });
-        }
 
         const {
             title,
