@@ -10,7 +10,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 
 import authRoutes from "./router/auth.routes.js";
-
+import enrollmentRoutes from "./router/enrollment.routes.js";
 dotenv.config()
 
 const app = express();
@@ -22,6 +22,7 @@ app.use("/courses", CourseRoutes)
 app.use("/modules", moduleRoutes);
 app.use("/resources", resourceRoutes);
 app.use("/auth", authRoutes)
+app.use("/enrollments", enrollmentRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
