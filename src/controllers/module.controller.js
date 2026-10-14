@@ -26,13 +26,6 @@ export const createModuleController = async (req, res, next) => {
         const { courseId } = req.params;
         const trainerId = req.user.userId;
 
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can create modules"
-            });
-        }
-
         const {
             title,
             description,
@@ -73,13 +66,6 @@ export const updateModuleController = async (req, res, next) => {
         const { moduleId, courseId } = req.params;
         const trainerId = req.user.userId;
 
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can update modules"
-            });
-        }
-
         const {
             title,
             description,
@@ -119,14 +105,6 @@ export const deleteModuleController = async (req, res, next) => {
     try {
         const { moduleId, courseId } = req.params;
         const trainerId = req.user.userId;
-
-        if (req.user.role !== "formateur") {
-            return res.status(403).json({
-                success: false,
-                message: "Only trainers can delete modules"
-            });
-        }
-
         const module = await deleteModule(moduleId, courseId, trainerId);
 
         if (!module) {
