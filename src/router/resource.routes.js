@@ -8,6 +8,7 @@ import {
 import { upload } from "../middlewares/upload.middleware.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
+import { requireEnrollment } from "../middlewares/requireEnrollment.middleware.js";
 
 const router = express.Router();
 
@@ -29,6 +30,8 @@ const router = express.Router();
  */
 router.get(
     "/module/:moduleId",
+    authenticate,
+    requireEnrollment,
     getResourcesByModuleController
 );
 
