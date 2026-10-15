@@ -1,6 +1,6 @@
-import Module from "../models/Module";
-import Enrollment from "../models/Enrollment"
-import Progression from "../models/Progression";
+import Module from "../models/Module.js";
+import Enrollment from "../models/Enrollment.js"
+import Progression from "../models/Progression.js";
 
 export const getModulesByOrder = async(courseId) => {
     return await Module.find({
