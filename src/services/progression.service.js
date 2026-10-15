@@ -1,6 +1,7 @@
 import Module from "../models/Module.js";
 import Enrollment from "../models/Enrollment.js"
 import Progression from "../models/Progression.js";
+import Resource from "../models/Resource.js";
 
 export const getModulesByOrder = async(courseId) => {
     return await Module.find({
@@ -126,6 +127,84 @@ export const completeModule = async (learnerId, courseId, moduleId) => {
     return {
         success: true,
         message: "module completed successfully",
+        data: progression
+    }
+}
+
+export const markResourceAsViewed = async (learnerId, courseId, moduleId, resourceId) => {
+    const enrolled = await isLearnerEnrolled(learnerId, courseId)
+
+    if(!enrolled) {
+        return {
+            success: false,
+            status: 403,
+            message: "you're not enrolled in this course"
+        }
+    }
+
+    const module = await Module.find({
+        _id: moduleId,
+        courseId,
+        status: "published"
+    })
+
+    if(!module) {
+        return {
+            success: false,
+            status: 404,
+            message: "module not found or not published"
+        }
+    }
+
+    const previousCompleted = await isPreviousModuleCompleted(
+        learnerId, courseId, moduleId
+    )
+
+    if(!previousCompleted) {
+        return  {
+            success: false,
+            status: 403,
+            message: "complete the previous module first"
+        }
+    }
+
+    const resource = await resource.find({
+        _id: resourceId,
+        moduleId
+    })
+
+    if(!resource){
+        return {
+            success: false,
+            status: 404,
+            message: "resource not found in this module"
+        }
+    }
+
+    let progression = await Progression.find({
+        learnerId, 
+        courseId,
+        moduleId
+    })
+
+    if(!progression) {
+        progression = await Progression.create({
+            learnerId,
+            courseId,
+            moduleId,
+            complete: false,
+            viewResources: [resourceId]
+        })
+    } else if (!progression.viewResources.some(
+        (id) => id.toString() === resourceId.toString()
+    )) {
+        progression.viewResources.push(resourceId)
+        await progression.save()
+    }
+
+    return {
+        success: true,
+        message: "resource marked as viewed",
         data: progression
     }
 }
