@@ -16,3 +16,13 @@ export const isLearnerEnrolled = async(learnerId, courseId) => {
     })
     return enrollment !== null
 }
+
+export const isModuleCompleted = async(learnerId, courseId, moduleId) => {
+    const progression = await Progression.findOne({
+        learnerId: learnerId,
+        courseId: courseId,
+        moduleId: moduleId,
+        completed: true
+    })
+    return progression !== null
+}
