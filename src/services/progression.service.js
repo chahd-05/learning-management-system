@@ -61,3 +61,71 @@ export const getAccessibleModule = async(learnerId, courseId) => {
     }
     return null
 }
+
+export const completeModule = async (learnerId, courseId, moduleId) => {
+    const enrolled = await isLearnerEnrolled(learnerId, courseId)
+
+    if(!enrolled) {
+        return {
+            success: false,
+            status: 403,
+            message: "you're not enrolled in this course"
+        }
+    }
+
+    const module = await Module.findOne({
+        _id: moduleId,
+        courseId: courseId,
+        status: "published"
+    })
+
+    if(!module) {
+        return {
+            success: false,
+            status: 404,
+            message: "module not found or not published"
+        }
+    }
+
+    const previousCompleted = await isPreviousModuleCompleted(
+        learnerId,
+        courseId,
+        moduleId
+    )
+
+    if(!previousCompleted) {
+        return {
+            success: false,
+            status: 403,
+            message: "complete the previous module first"
+        }
+    }
+
+    const existingProgression = await Progression.findOne({
+        learnerId,
+        courseId,
+        moduleId
+    })
+
+    if(existingProgression && existingProgression.completed) {
+        return {
+            success: true,
+            message: "module already completed",
+            data: existingProgression
+        }
+    }
+
+    const progression = await Progression.create({
+        learnerId,
+        courseId,
+        moduleId,
+        completed: true,
+        completedAt: new Date()
+    })
+
+    return {
+        success: true,
+        message: "module completed successfully",
+        data: progression
+    }
+}
