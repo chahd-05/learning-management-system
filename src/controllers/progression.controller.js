@@ -29,7 +29,7 @@ export const completeModuleController = async (req, resizeBy, next) => {
     }
 }
 
-export const markResourceAsViewed = async (req, resizeBy, next) => {
+export const markResourceAsViewedController = async (req, resizeBy, next) => {
     try {
         const {courseId, moduleId, resourceId} = req.params
         const learnerId = req.user.userId
