@@ -1,5 +1,6 @@
 import Module from "../models/Module";
 import Enrollment from "../models/Enrollment"
+import Progression from "../models/Progression";
 
 export const getModulesByOrder = async(courseId) => {
     return await Module.find({
@@ -25,4 +26,19 @@ export const isModuleCompleted = async(learnerId, courseId, moduleId) => {
         completed: true
     })
     return progression !== null
+}
+
+export const isPreviousModuleCompleted = async(learnerId, courseId, moduleId) => {
+    const modules = await getModulesByOrder(courseId)
+    const currentIndex = modules.findIndex(
+        (module) => module._id.toString() === moduleId.toString()
+    )
+    if(currentIndex === -1) {
+        return false
+    }
+    if(currentIndex === 0) {
+        return true
+    }
+    const previousModule = modules[currentIndex -1]
+     return await isModuleCompleted(learnerId, courseId, previousModule._id)
 }
