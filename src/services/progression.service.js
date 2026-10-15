@@ -42,3 +42,22 @@ export const isPreviousModuleCompleted = async(learnerId, courseId, moduleId) =>
     const previousModule = modules[currentIndex -1]
      return await isModuleCompleted(learnerId, courseId, previousModule._id)
 }
+
+export const getAccessibleModule = async(learnerId, courseId) => {
+    const enrolled = await isLearnerEnrolled(learnerId, courseId)
+    if(!enrolled) {
+        return null
+    }
+    const modules = await getModulesByOrder(courseId)
+
+    for(const module of modules) {
+        const completed = await isModuleCompleted(
+            learnerId, 
+            courseId, 
+            module._id)
+            if(!completed) {
+                return module
+            }
+    }
+    return null
+}
