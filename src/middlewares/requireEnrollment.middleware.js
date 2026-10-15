@@ -2,10 +2,9 @@ import Enrollment from "../models/Enrollment.js";
 
 export const requireEnrollment = async (req, res, next) => {
     try{
-        const learnerId = res.user.userId
-
+        const learnerId = req.user.userId;
         
-        const courseId = res.params.courseId
+        const courseId = req.params.courseId;
         
         const activeEnrollment = await Enrollment.findOne({
                 learnerId,
