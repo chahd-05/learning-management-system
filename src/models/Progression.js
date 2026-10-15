@@ -20,7 +20,13 @@ const proressionSchema = new mongoose.Schema(
         completedAt: {
             type: Date,
             default: null
-        }
+        },
+        viewResources: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Resourses"
+            }
+        ]
     },
     {
         timestamps: true
