@@ -3,7 +3,7 @@ import { completeModule, markResourceAsViewed } from "../services/progression.se
 export const completeModuleController = async (req, res, next) => {
     try {
         const {courseId, moduleId} = req.params
-        const learnerId = req.user.courseId
+        const learnerId = req.user.userId
 
         const result = await completeModule(
             learnerId,
