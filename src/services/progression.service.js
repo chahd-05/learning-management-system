@@ -348,3 +348,47 @@ export const updateCourseProgress = async (learnerId, courseId) => {
         progressPercent
     }
 }
+
+export const getCourseProgress = async (learnerId, courseId) => {
+    const enrollment = await Enrollment.findOne({
+        learnerId,
+        courseId,
+        status: "active"
+    })
+
+    if(!enrollment) {
+        return {
+            success: false,
+            status: 403,
+            message: "you're not enrolled in this course"
+        }
+    }
+
+    const modules = await getModulesByOrder.find(courseId)
+
+    const progressions = await Progression.find({
+        learnerId,
+        courseId,
+        moduleId: {$in: modules.map((module) => module._id)}
+    })
+    return {
+        success: true,
+        data: {
+            courseId,
+            progressPercent: enrollment.progressPercent,
+            totalModules: modules.length,
+            completedModules: progressions.filter((progression) => progression.completed).length,
+            modules: await Promise.all(
+                modules.map(async (module) => ({
+                    moduleId: module._id,
+                    title: module.title,
+                    status:(await getModuleStatus(
+                        learnerId,
+                        courseId,
+                        module._id
+                    )).status
+                }))
+            )
+        }
+    }
+}
