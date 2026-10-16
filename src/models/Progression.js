@@ -5,7 +5,7 @@ const proressionSchema = new mongoose.Schema(
         learnerId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            require: true
+            required: true
         },
         courseId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -16,6 +16,10 @@ const proressionSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Module",
             required: true
+        }, 
+        completed: {
+            type: Boolean,
+            default: false
         },
         completedAt: {
             type: Date,
@@ -24,7 +28,7 @@ const proressionSchema = new mongoose.Schema(
         viewResources: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Resourses"
+                ref: "Resourse"
             }
         ]
     },
