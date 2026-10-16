@@ -255,7 +255,7 @@ export const getModuleStatus = async(learnerId, courseId, moduleId) => {
         }
     }
 
-    const modules = await getModulesByOrder(courseId)
+    const module = await getModulesByOrder(courseId)
 
     const moduleExists = module.some(
         (module) => module._id.toString() === moduleId.toString()
