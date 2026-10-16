@@ -257,9 +257,9 @@ export const getModuleStatus = async(learnerId, courseId, moduleId) => {
         }
     }
 
-    const module = await getModulesByOrder(courseId)
+    const modules = await getModulesByOrder(courseId)
 
-    const moduleExists = module.some(
+    const moduleExists = modules.some(
         (module) => module._id.toString() === moduleId.toString()
     )
     if(!moduleExists) {
@@ -319,7 +319,7 @@ export const updateCourseProgress = async (learnerId, courseId) => {
         }
     }
 
-    if(module.length === 0) {
+    if(modules.length === 0) {
         enrollment.progressPercent = 0
         await enrollment.save()
 
