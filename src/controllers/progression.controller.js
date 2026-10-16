@@ -1,6 +1,6 @@
 import { completeModule, markResourceAsViewed } from "../services/progression.service.js";
 
-export const completeModuleController = async (req, resizeBy, next) => {
+export const completeModuleController = async (req, res, next) => {
     try {
         const {courseId, moduleId} = req.params
         const learnerId = req.user.courseId
@@ -12,13 +12,13 @@ export const completeModuleController = async (req, resizeBy, next) => {
         )
 
         if(!result.success) {
-            return resizeBy.status(result.status).json({
+            return res.status(result.status).json({
                 success: false,
                 message: result.message
             })
         }
 
-        return resizeBy.status(200).json({
+        return res.status(200).json({
             success: true,
             message: result.message,
             data: result.data || null
@@ -28,7 +28,7 @@ export const completeModuleController = async (req, resizeBy, next) => {
     }
 }
 
-export const markResourceAsViewedController = async (req, resizeBy, next) => {
+export const markResourceAsViewedController = async (req, res, next) => {
     try {
         const {courseId, moduleId, resourceId} = req.params
         const learnerId = req.user.userId
