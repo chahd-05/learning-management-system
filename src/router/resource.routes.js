@@ -10,6 +10,8 @@ import { authenticate } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
 import { requireEnrollment } from "../middlewares/requireEnrollment.middleware.js";
 
+import { requireSequentialProgression } from "../middlewares/requireSequentialProgression.middleware.js";
+
 const router = express.Router();
 
 /**
@@ -32,6 +34,7 @@ router.get(
     "/module/:moduleId",
     authenticate,
     requireEnrollment,
+    requireSequentialProgression,
     getResourcesByModuleController
 );
 
