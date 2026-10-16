@@ -364,7 +364,7 @@ export const getCourseProgress = async (learnerId, courseId) => {
         }
     }
 
-    const modules = await getModulesByOrder.find(courseId)
+    const modules = await getModulesByOrder(courseId)
 
     const progressions = await Progression.find({
         learnerId,
