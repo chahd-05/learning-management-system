@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const proressionSchema = new mongoose.Schema(
+const progressionSchema = new mongoose.Schema(
     {
         learnerId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const proressionSchema = new mongoose.Schema(
         viewResources: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Resourse"
+                ref: "Resource"
             }
         ]
     },
@@ -37,14 +37,14 @@ const proressionSchema = new mongoose.Schema(
     }
 );
 
-proressionSchema.index(
+progressionSchema.index(
     {learnerId: 1, courseId: 1, moduleId: 1},
     {unique: true}
 )
 
 const Progression = mongoose.model(
     "progression",
-    proressionSchema
+    progressionSchema
 )
 
 export default Progression;
