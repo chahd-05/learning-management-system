@@ -299,3 +299,50 @@ export const getModuleStatus = async(learnerId, courseId, moduleId) => {
         status: "accessible"
     }
 }
+
+export const updateCourseProgress = async (learnerId, courseId) => {
+    const modules = await getModulesByOrder(courseId)
+
+    const enrollment = await Enrollment.findOne({
+        learnerIdn,
+        courseId,
+        status:  "active"
+    })
+
+    if(!enrollment) {
+        return {
+            success: false,
+            status: 403,
+            message: "active enrollment not found"
+        }
+    }
+
+    if(module.length === 0) {
+        enrollment.progressPercent = 0
+        await enrollment.save()
+
+        return {
+            success: true,
+            progressPercent: 0
+        }
+    }
+
+    const completeModule = await Progression.countDocuments({
+        learnerId,
+        courseId, 
+        moduleId: {$in: modules.map((module) => module._id)},
+        completed: true
+    })
+
+    const progressPercent = Math.round(
+        (completeModule / modules.length) * 100
+    )
+
+    enrollment.progressPercent = progressPercent
+    await enrollment.save()
+
+    return {
+        success: true,
+        progressPercent
+    }
+}
