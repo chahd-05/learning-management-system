@@ -150,6 +150,8 @@ export const completeModule = async (learnerId, courseId, moduleId) => {
 
     await progression.save();
 
+    await updateCourseProgress(learnerId, courseId)
+
     return {
         success: true,
         message: "Module completed successfully",
