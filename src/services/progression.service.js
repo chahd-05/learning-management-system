@@ -304,7 +304,7 @@ export const updateCourseProgress = async (learnerId, courseId) => {
     const modules = await getModulesByOrder(courseId)
 
     const enrollment = await Enrollment.findOne({
-        learnerIdn,
+        learnerId,
         courseId,
         status:  "active"
     })
