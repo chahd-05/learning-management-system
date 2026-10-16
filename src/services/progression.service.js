@@ -244,3 +244,58 @@ export const markResourceAsViewed = async (
         data: progression
     };
 };
+
+export const getModuleStatus = async(learnerId, courseId, moduleId) => {
+    const enrolled = await isLearnerEnrolled(learnerId, courseId)
+
+    if(!enrolled) {
+        return {
+            status: "locked",
+            message: "you are not enrolled in this course"
+        }
+    }
+
+    const modules = await getModulesByOrder(courseId)
+
+    const moduleExists = module.some(
+        (module) => module._id.toString() === moduleId.toString()
+    )
+    if(!moduleExists) {
+        return {
+            status: "not_found",
+            message: "module not found or not published"
+        }
+    }
+
+    const completed = await isModuleCompleted(
+        learnerId,
+        courseId,
+        moduleId
+    )
+    if(completed) {
+        return {status: "completed"}
+    }
+
+    const previousCompleted = await isPreviousModuleCompleted(
+        learnerId,
+        courseId, 
+        moduleId
+    )
+
+    if(!previousCompleted) {
+        return { status: "locked"}
+    }
+    const progression = await Progression.findOne({
+        learnerId,
+        courseId,
+        moduleId
+    })
+
+    if(progression && progression.viewResources.length > 0){
+        return {status: "in progress"}
+    }
+    
+    return {
+        status: "accessible"
+    }
+}
