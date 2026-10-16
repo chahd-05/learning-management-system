@@ -1,5 +1,4 @@
-import { completeModule } from "../services/progression.service.js";
-import { markResourceAsViewed } from "../services/progression.service.js";
+import { completeModule, markResourceAsViewed } from "../services/progression.service.js";
 
 export const completeModuleController = async (req, resizeBy, next) => {
     try {
