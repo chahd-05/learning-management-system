@@ -225,16 +225,16 @@ export const markResourceAsViewed = async (
             learnerId,
             courseId,
             moduleId,
-            viewedResources: [resourceId]
+            viewResources: [resourceId]
         });
 
         await progression.save();
     } else if (
-        !progression.viewedResources.some(
+        !progression.viewResources.some(
             (id) => id.toString() === resourceId.toString()
         )
     ) {
-        progression.viewedResources.push(resourceId);
+        progression.viewResources.push(resourceId);
         await progression.save();
     }
 
