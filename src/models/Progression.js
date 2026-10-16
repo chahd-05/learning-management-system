@@ -43,7 +43,7 @@ progressionSchema.index(
 )
 
 const Progression = mongoose.model(
-    "progression",
+    "Progression",
     progressionSchema
 )
 
