@@ -1,8 +1,16 @@
 import express from "express";
 
 import {
-    getResourcesByModuleController
+    getResourcesByModuleController,
+    createResourceController
 } from "../controllers/resource.controller.js";
+
+import { upload } from "../middlewares/upload.middleware.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
+import { requireEnrollment } from "../middlewares/requireEnrollment.middleware.js";
+
+import { requireSequentialProgression } from "../middlewares/requireSequentialProgression.middleware.js";
 
 const router = express.Router();
 
@@ -18,14 +26,24 @@ const router = express.Router();
  *         required: true
  *         schema:
  *           type: string
- *         example: 68f123456789012345678901
  *     responses:
  *       200:
  *         description: Resources retrieved successfully
  */
 router.get(
     "/module/:moduleId",
+    authenticate,
+    requireEnrollment,
+    requireSequentialProgression,
     getResourcesByModuleController
+);
+
+router.post(
+    "/create/:moduleId",
+    authenticate,
+    authorizeRoles("formateur", "admin"),
+    upload.single("file"),
+    createResourceController
 );
 
 export default router;

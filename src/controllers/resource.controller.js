@@ -1,7 +1,8 @@
-import
-{
-getResourcesByModule
+import {
+    getResourcesByModule,
+    createResource
 } from "../services/resource.service.js";
+
 
 export const getResourcesByModuleController = async (req, res, next) => {
     try {
@@ -12,6 +13,49 @@ export const getResourcesByModuleController = async (req, res, next) => {
             message: "Resources retrieved successfully",
             data: resources
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const createResourceController = async (req, res, next) => {
+    try {
+        const { moduleId } = req.params;
+        const trainerId = req.user.userId;
+        const {
+            title,
+            type,
+            urlOrStorageRef,
+            description,
+            estimatedDuration,
+            order
+        } = req.body;
+
+        const resource = await createResource(moduleId, trainerId, {
+            title,
+            type,
+            urlOrStorageRef: req.file ? req.file.path : urlOrStorageRef,
+            description,
+            originalFileName: req.file ? req.file.originalname : null,
+            fileSize: req.file ? req.file.size : null,
+            estimatedDuration,
+            order
+        });
+
+        if (!resource) {
+            return res.status(404).json({
+                success: false,
+                message: "Module not found for this trainer"
+            });
+        }
+
+        return res.status(201).json({
+            success: true,
+            message: "Resource created successfully",
+            data: resource
+        });
+
     } catch (error) {
         next(error);
     }

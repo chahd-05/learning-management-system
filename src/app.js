@@ -8,6 +8,12 @@ import resourceRoutes from "./router/resource.routes.js";
 import { notFound } from "./middlewares/notFound.middleware.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+
+import authRoutes from "./router/auth.routes.js";
+import enrollmentRoutes from "./router/enrollment.routes.js";
+
+import progressionRoutes from "./router/progression.routes.js"
+
 dotenv.config()
 
 const app = express();
@@ -18,8 +24,14 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/courses", CourseRoutes)
 app.use("/modules", moduleRoutes);
 app.use("/resources", resourceRoutes);
+app.use("/auth", authRoutes)
+app.use("/enrollments", enrollmentRoutes);
+app.use("/progression", progressionRoutes)
+
 app.use(notFound)
 app.use(errorHandler)
+
+
 
 app.listen(3500,()=>{
     console.log("Server runinig in port 3500")

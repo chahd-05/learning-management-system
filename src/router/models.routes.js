@@ -1,11 +1,15 @@
 import express from "express";
-
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
+import { requireEnrollment } from "../middlewares/requireEnrollment.middleware.js";
 import {
-    getModulesByCourseController
+    getModulesByCourseController,
+    createModuleController,
+    updateModuleController,
+    deleteModuleController
 } from "../controllers/module.controller.js";
 
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -26,7 +30,30 @@ const router = express.Router();
  */
 router.get(
     "/course/:courseId",
+    authenticate,
+    requireEnrollment,
     getModulesByCourseController
+);
+
+router.post(
+    "/create/:courseId",
+    authenticate,
+    authorizeRoles("formateur", "admin"),
+    createModuleController
+);
+
+router.patch(
+    "/update/:courseId/:moduleId",
+    authenticate,
+    authorizeRoles("formateur", "admin"),
+    updateModuleController
+);
+
+router.delete(
+    "/delete/:courseId/:moduleId",
+    authenticate,
+    authorizeRoles("formateur", "admin"),
+    deleteModuleController
 );
 
 export default router;

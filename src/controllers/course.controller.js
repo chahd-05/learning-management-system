@@ -1,11 +1,12 @@
-import
-{
-getAllCourses,
-getCourseById,
-filterCourses,
-sortCourses,
-searchCourses,
-createCourse
+import {
+    getAllCourses,
+    getCourseById,
+    filterCourses,
+    sortCourses,
+    searchCourses,
+    createCourse,
+    updateCourse,
+    changeCourseStatus
 } from "../services/course.service.js";
 
 
@@ -87,7 +88,7 @@ export const searchCourse = async (req, res, next) => {
 
 export const createCourseController = async (req, res, next) => {
     try {
-        const trainerId = req.params.trainerId;
+        const trainerId = req.user.userId;
 
         const {
             title,
@@ -114,6 +115,90 @@ export const createCourseController = async (req, res, next) => {
         return res.status(201).json({
             success: true,
             message: "Course created successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const updateCourseController = async (req, res, next) => {
+    try {
+        const { courseId } = req.params;
+        const trainerId = req.user.userId;
+
+        const {
+            title,
+            shortDescription,
+            description,
+            objectives,
+            prerequisites,
+            level,
+            category,
+            estimatedDuration
+        } = req.body;
+
+        const course = await updateCourse(
+            courseId,
+            trainerId,
+            {
+                title,
+                shortDescription,
+                description,
+                objectives,
+                prerequisites,
+                level,
+                category,
+                estimatedDuration
+            }
+        );
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found for this trainer"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Course updated successfully",
+            data: course
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const changeCourseStatusController = async (req, res, next) => {
+    try {
+
+        const { courseId } = req.params;
+        const trainerId = req.user.userId;
+        const { status } = req.body;
+
+        if (req.user.role !== "formateur") {
+            return res.status(403).json({
+                success: false,
+                message: "Only trainers can update courses"
+            });
+        }
+        const course = await changeCourseStatus(
+            courseId,
+            trainerId,
+            status
+        );
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found for this trainer"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Course status updated successfully",
             data: course
         });
 

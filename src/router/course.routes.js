@@ -6,11 +6,13 @@ getCourse,
 filterCoursesController,
 sortCoursesController,
 searchCourse,
-createCourseController
+createCourseController,
+updateCourseController,
+changeCourseStatusController
 } from "../controllers/course.controller.js"
 
-
-
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { authorizeRoles } from "../middlewares/authorizeRoles.middleware.js";
 const router = express.Router();
 
 
@@ -95,6 +97,11 @@ router.get("/search", searchCourse);
  *       404:
  *         description: Course not found
  */
-router.post("/create/:trainerId",createCourseController);
-router.get("/:id",getCourse)
+router.patch("/status/:courseId", authenticate, authorizeRoles("formateur", "admin"), changeCourseStatusController);
+
+router.post("/create", authenticate, authorizeRoles("formateur", "admin"), createCourseController);
+
+router.patch("/update/:courseId", authenticate, authorizeRoles("formateur", "admin"), updateCourseController);
+
+router.get("/:id", getCourse);
 export default router;
